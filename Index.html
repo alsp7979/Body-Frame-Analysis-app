@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>더하기교육원 골격 체형 진단 테스트</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts: Pretendard & Playfair Display -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body {
+font-family: 'Noto Sans KR', sans-serif;
+background: radial-gradient(circle at top right, #fcf8f2 0%, #f6f0e5 100%);
+}
+.serif-title {
+font-family: 'Playfair Display', serif;
+}
+.card-shadow {
+box-shadow: 0 20px 40px -15px rgba(139, 115, 85, 0.15);
+}
+.glass-nav {
+background: rgba(255, 255, 255, 0.75);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+}
+/* Smooth Transition animation /
+.fade-in {
+animation: fadeIn 0.4s ease-out forwards;
+}
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
+}
+/ Option button active states */
+.option-active {
+border-color: #c49a6c !important;
+background-color: #fdfaf4 !important;
+box-shadow: 0 8px 25px rgba(196, 154, 108, 0.22) !important;
+}
+</style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-neutral-800">
+
+<!-- 네비게이션 바 -->
+<nav class="sticky top-0 z-50 glass-nav border-b border-amber-100/50 px-6 py-4">
+<div class="max-w-4xl mx-auto flex justify-between items-center">
+<div class="flex items-center space-x-2">
+<span class="text-xl font-bold tracking-wider text-amber-800 serif-title">Thehagiedu</span>
+<span class="text-xs bg-amber-700 text-white px-2 py-0.5 rounded font-medium">더하기교육원</span>
+</div>
+<div class="flex items-center space-x-4">
+<button onclick="showHistoryModal()" class="text-sm font-medium text-amber-900 hover:text-amber-700 transition">
+<i class="fa-regular fa-folder-open mr-1"></i> 나의 기록
+</button>
+</div>
+</div>
+</nav>
+
+<!-- 메인 컨텐츠 영역 -->
+<main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8 md:py-12 flex items-center justify-center">
+
+<!-- 1단계: 온보딩 및 성별/이름 입력 -->
+<div id="step-intro" class="w-full max-w-xl bg-white rounded-3xl p-8 md:p-10 card-shadow border border-amber-100/50 fade-in">
+<div class="text-center mb-8">
+<span class="text-xs uppercase tracking-widest text-amber-600 font-bold bg-amber-50 px-3 py-1.5 rounded-full">SKELETON BODY DIAGNOSIS</span>
+<h1 class="text-3xl md:text-4xl font-black text-amber-950 mt-4 leading-tight">나만의 골격 체형 진단</h1>
+<p class="text-neutral-500 mt-2 text-sm md:text-base">나를 가장 아름답게 만드는 패션 실루엣을 찾아보세요.</p>
+</div>
+
+<div class="border-t border-b border-amber-100/50 py-6 my-6 space-y-4">
+<div class="flex space-x-3 items-center text-neutral-600 text-sm">
+<span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">1</span>
+<span>손, 어깨, 무릎 등 16개 부위 자가 기입형 분석</span>
+</div>
+<div class="flex space-x-3 items-center text-neutral-600 text-sm">
+<span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">2</span>
+<span>복잡한 이미지 없이 심플하고 명확한 텍스트 질문 가이드</span>
+</div>
+<div class="flex space-x-3 items-center text-neutral-600 text-sm">
+<span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-bold">3</span>
+<span>더하기교육원의 체형별 맞춤 스타일링 꿀팁 즉시 제공</span>
+</div>
+</div>
+
+<div class="space-y-5">
+<div>
+<label class="block text-sm font-bold text-amber-950 mb-2">이름 또는 닉네임</label>
+<input type="text" id="user-name" placeholder="닉네임을 입력해주세요" class="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition text-sm">
+</div>
+
+<div>
+<label class="block text-sm font-bold text-amber-950 mb-2">성별 선택 <span class="text-red-500">*</span></label>
+<div class="grid grid-cols-2 gap-4">
+<button onclick="selectGender('female')" id="btn-female" class="py-4 border border-neutral-200 rounded-2xl font-bold text-neutral-600 flex flex-col items-center justify-center space-y-2 hover:bg-neutral-50 hover:border-neutral-300 transition">
+<i class="fa-solid fa-venus text-2xl text-rose-400"></i>
+<span>여성 (Female)</span>
+</button>
+<button onclick="selectGender('male')" id="btn-male" class="py-4 border border-neutral-200 rounded-2xl font-bold text-neutral-600 flex flex-col items-center justify-center space-y-2 hover:bg-neutral-50 hover:border-neutral-300 transition">
+<i class="fa-solid fa-mars text-2xl text-blue-400"></i>
+<span>남성 (Male)</span>
+</button>
+</div>
+</div>
+
+<button onclick="startDiagnosis()" class="w-full py-4 bg-amber-800 hover:bg-amber-900 text-white font-bold rounded-2xl shadow-lg shadow-amber-800/10 transition flex items-center justify-center space-x-2 mt-6">
+<span>진단 시작하기</span>
+<i class="fa-solid fa-arrow-right"></i>
+</button>
+</div>
+</div>
+
+<!-- 2단계: 질문지 카드 디자인 -->
+<div id="step-question" class="w-full max-w-2xl bg-white rounded-3xl p-6 md:p-10 card-shadow border border-amber-100/50 hidden fade-in">
+<!-- 진행률 표시 바 -->
+<div class="flex justify-between items-center mb-3">
+<span class="text-xs font-bold text-amber-700 tracking-wider" id="question-category">부위별 상세 매칭</span>
+<span class="text-xs text-neutral-400 font-medium" id="question-counter">01 / 16</span>
+</div>
+<div class="w-full bg-neutral-100 h-1.5 rounded-full overflow-hidden mb-8">
+<div id="progress-bar" class="bg-amber-700 h-full rounded-full transition-all duration-300" style="width: 6.25%;"></div>
+</div>
+
+<!-- 질문 헤더 -->
+<div class="mb-8 space-y-3">
+<span class="inline-block text-xs bg-amber-50 text-amber-800 px-3 py-1.5 rounded font-bold" id="question-part">손</span>
+<h2 class="text-xl md:text-2xl font-black text-amber-950 leading-snug" id="question-text">
+체형에 비해 손의 크기는 어떤가요?
+</h2>
+</div>
+
+<!-- 상세 텍스트 선택지들 (S, W, N) -->
+<div class="space-y-4" id="options-container">
+<!-- 동적으로 버튼 생성 -->
+</div>
+
+<!-- 이전 / 다음 컨트롤러 -->
+<div class="flex justify-between items-center mt-8 pt-6 border-t border-neutral-100">
+<button onclick="prevQuestion()" id="btn-prev" class="px-4 py-2.5 border border-neutral-200 text-neutral-500 rounded-xl hover:bg-neutral-50 text-xs font-bold transition flex items-center space-x-1">
+<i class="fa-solid fa-chevron-left text-[10px]"></i>
+<span>이전 질문</span>
+</button>
+<span class="text-[11px] text-neutral-400">자가 체크 시 다음 문항으로 자동 이동합니다.</span>
+</div>
+</div>
+
+<!-- 3단계: 결과 페이지 -->
+<div id="step-result" class="w-full max-w-3xl bg-white rounded-3xl p-6 md:p-10 card-shadow border border-amber-100/50 hidden fade-in">
+<div class="text-center mb-6">
+<span class="text-xs uppercase tracking-widest text-amber-600 font-bold bg-amber-50 px-3 py-1.5 rounded-full">Your Style Result</span>
+<h2 class="text-3xl font-black text-amber-950 mt-4 leading-tight"><span id="result-user-name">스타일리시</span>님의 골격 진단 결과</h2>
+</div>
+
+<!-- 메인 진단 유형 박스 -->
+<div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-6 md:p-8 border border-amber-100 text-center mb-8 relative overflow-hidden">
+<div class="absolute -top-12 -left-12 w-32 h-32 bg-amber-100/30 rounded-full blur-2xl"></div>
+<div class="absolute -bottom-12 -right-12 w-32 h-32 bg-amber-100/30 rounded-full blur-2xl"></div>
+
+<p class="text-sm font-semibold text-amber-800 tracking-wider">가장 도드라지는 당신의 매력적 골격은</p>
+<h3 class="text-4xl md:text-5xl font-black text-amber-950 mt-2 tracking-tight" id="result-type-title">스트레이트 타입 (S)</h3>
+<p class="text-neutral-500 text-xs md:text-sm mt-3 max-w-lg mx-auto" id="result-type-intro">
+가장 볼륨감 있고 탄력 넘치는 입체적 체형을 뽐내는 아름다운 유형입니다.
+</p>
+</div>
+
+<!-- 타입 비율 차트 (S, W, N 비율 분석) -->
+<div class="mb-10">
+<h4 class="text-sm font-bold text-amber-950 mb-4 flex items-center">
+<i class="fa-solid fa-chart-bar text-amber-600 mr-2"></i> 골격 성향 분석표
+</h4>
+<div class="space-y-4 bg-neutral-50 p-6 rounded-2xl border border-neutral-100">
+<!-- S 비율 -->
+<div>
+<div class="flex justify-between text-xs font-bold mb-1">
+<span class="text-amber-950">Straight (스트레이트 - S)</span>
+<span class="text-amber-800" id="ratio-s-text">0%</span>
+</div>
+<div class="w-full bg-neutral-200 h-3 rounded-full overflow-hidden">
+<div id="ratio-s-bar" class="bg-amber-600 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+</div>
+</div>
+<!-- W 비율 -->
+<div>
+<div class="flex justify-between text-xs font-bold mb-1">
+<span class="text-amber-950">Wave (웨이브 - W)</span>
+<span class="text-rose-700" id="ratio-w-text">0%</span>
+</div>
+<div class="w-full bg-neutral-200 h-3 rounded-full overflow-hidden">
+<div id="ratio-w-bar" class="bg-rose-500 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+</div>
+</div>
+<!-- N 비율 -->
+<div>
+<div class="flex justify-between text-xs font-bold mb-1">
+<span class="text-amber-950">Natural (내추럴 - N)</span>
+<span class="text-emerald-700" id="ratio-n-text">0%</span>
+</div>
+<div class="w-full bg-neutral-200 h-3 rounded-full overflow-hidden">
+<div id="ratio-n-bar" class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 핵심 특징 요약 & 스타일 가이드 제안 -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+<!-- 뼈대적 특징 요약 -->
+<div class="bg-white p-6 rounded-2xl border border-neutral-200/80 space-y-3">
+<h4 class="font-bold text-amber-950 flex items-center border-b border-neutral-100 pb-2">
+<i class="fa-solid fa-bone text-amber-600 mr-2"></i> 나의 신체적 주요 특징
+</h4>
+<ul class="text-sm text-neutral-600 space-y-2 list-disc list-inside" id="result-features">
+<!-- 동적 특징 삽입 -->
+</ul>
+</div>
+<!-- 추천 패션 & 기피 패션 -->
+<div class="bg-amber-50/30 p-6 rounded-2xl border border-amber-100/50 space-y-3">
+<h4 class="font-bold text-amber-950 flex items-center border-b border-amber-100/50 pb-2">
+<i class="fa-solid fa-shirt text-amber-700 mr-2"></i> 베스트 스타일링 코디
+</h4>
+<div class="text-sm space-y-2" id="result-recommendations">
+<!-- 동적 패션 추천 삽입 -->
+</div>
+</div>
+</div>
+
+<!-- 다시하기 및 결과 저장 공유 인터페이스 -->
+<div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+<button onclick="resetTest()" class="flex-1 py-4 border border-neutral-200 text-neutral-700 hover:bg-neutral-50 font-bold rounded-2xl transition flex items-center justify-center space-x-2">
+<i class="fa-solid fa-rotate-left"></i>
+<span>테스트 다시하기</span>
+</button>
+<button onclick="saveToHistory()" class="flex-1 py-4 bg-amber-800 hover:bg-amber-900 text-white font-bold rounded-2xl shadow-lg shadow-amber-800/10 transition flex items-center justify-center space-x-2">
+<i class="fa-regular fa-bookmark"></i>
+<span>진단 결과 기록저장</span>
+</button>
+</div>
+</div>
+
+</main>
+
+<!-- 하단 라이선스 및 크레딧 -->
+<footer class="bg-neutral-900 text-neutral-400 py-10 px-6 mt-12 border-t border-neutral-800 text-center">
+<div class="max-w-4xl mx-auto space-y-4">
+<div class="flex justify-center items-center space-x-2">
+<span class="text-lg font-bold text-neutral-200 serif-title tracking-widest">THEHAGIEDU</span>
+</div>
+<p class="text-xs text-neutral-500 max-w-md mx-auto leading-relaxed">
+본 진단 프로그램은 최고의 교육 서비스를 제공하는 <span class="text-amber-500 font-semibold">더하기교육원</span>의 연구 개발 자문을 받아 제작되었습니다. <br>전문 스타일리스트 컨설팅 교육 프로그램은 더하기교육원 공식 사이트에서 만나실 수 있습니다.
+</p>
+<div class="flex justify-center space-x-4 text-xs text-neutral-500">
+<a href="http://www.thehagiedu.com" target="_blank" class="hover:text-neutral-300 transition"><i class="fa-solid fa-globe mr-1"></i> 공식 웹사이트</a>
+<span>|</span>
+<span>© 2026 THE HAGIE. All rights reserved.</span>
+</div>
+</div>
+</footer>
+
+<!-- 히스토리 모달 (나의 기록실) -->
+<div id="history-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+<div class="bg-white rounded-3xl max-w-lg w-full p-6 md:p-8 max-h-[80vh] flex flex-col justify-between card-shadow border border-amber-100 fade-in">
+<div class="flex justify-between items-center pb-4 border-b border-neutral-100">
+<h3 class="text-lg font-bold text-amber-950 flex items-center">
+<i class="fa-solid fa-clock-rotate-left text-amber-700 mr-2"></i> 나의 누적 골격 진단지
+</h3>
+<button onclick="closeHistoryModal()" class="text-neutral-400 hover:text-neutral-600 transition">
+<i class="fa-solid fa-xmark text-xl"></i>
+</button>
+</div>
+
+<!-- 기록들 -->
+<div id="history-list" class="overflow-y-auto flex-grow my-4 space-y-3 pr-1 text-sm">
+<!-- 기록들이 동적으로 들어갈 공간 -->
+<p class="text-neutral-400 text-center py-8">아직 저장된 진단 결과가 없습니다.</p>
+</div>
+
+<div class="pt-4 border-t border-neutral-100 flex space-x-3">
+<button onclick="clearHistory()" class="px-4 py-3 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold rounded-xl transition text-xs flex items-center justify-center space-x-1">
+<i class="fa-solid fa-trash-can"></i>
+<span>모든 기록 삭제</span>
+</button>
+<button onclick="closeHistoryModal()" class="flex-grow py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-xl transition text-xs">
+닫기
+</button>
+</div>
+</div>
+</div>
+
+<!-- 알림용 모달 (Alert 대용 커스텀 모달) -->
+<div id="alert-modal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-[100] flex items-center justify-center p-4 hidden">
+<div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center card-shadow border border-amber-100/50">
+<div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+<i class="fa-solid fa-circle-info" id="alert-icon"></i>
+</div>
+<h4 class="font-bold text-neutral-900 mb-2" id="alert-title">안내</h4>
+<p class="text-sm text-neutral-500 mb-6 leading-relaxed" id="alert-message">메시지 본문</p>
+<button onclick="closeAlert()" class="w-full py-3 bg-amber-800 hover:bg-amber-900 text-white font-bold rounded-xl transition text-sm">
+확인
+</button>
+</div>
+</div>
+
+<!-- JavaScript 애플리케이션 로직 -->
+<script>
+// 질문지 데이터 바인딩 (총 16개 핵심 체크리스트)
+// S: 스트레이트, W: 웨이브, N: 내추럴
+const questions = [
+{
+id: 1,
+part: "01. 손 모양(골격)",
+category: "부위별 정밀 측정",
+text: "자신의 전체 체형 대비 '손의 크기'와 형태적 실루엣은 어떠합니까?",
+options: [
+{ score: 'S', text: "전체 체형에 비해 손이 작고 오밀조밀하며 도톰한 살집이 있는 편이다." },
+{ score: 'W', text: "손바닥과 손가락이 가늘며 두께감이 얇고 연약하며 평이한 편이다." },
+{ score: 'N', text: "체형에 비해 손이 확연히 크며 손가락의 뼈와 관절 질감이 단단하다." }
+ ]
+},
+{
+id: 2,
+part: "02. 목 길이&두께",
+category: "상체 골격 구조",
+text: "목의 길이 and 전반적인 두께 형태는 어떠합니까?",
+options: [
+{ score: 'S', text: "목이 다소 짧고 두꺼우며 승모근에서 어깨로 이어지는 선이 묵직하다." },
+{ score: 'W', text: "목이 가늘고 아주 길게 뻗어있어 연약하고 가녀린 느낌을 준다." },
+{ score: 'N', text: "목 길이가 적당하지만 목 옆줄이나 힘줄 발달이 도드라지게 눈에 띈다." }
+ ]
+},
+{
+id: 3,
+part: "03. 상체 골격",
+category: "상체 골격 구조",
+text: "정면과 옆면에서 느껴지는 상체 골격의 부피감은 어떠합니까?",
+options: [
+{ score: 'S', text: "상체의 두께 단면이 원통형에 가깝고 근육층이 쉽게 자리잡아 입체적이고 단단하다." },
+{ score: 'W', text: "상체 단면이 얇고 평평하며 어깨 주변선이 전체적으로 가늘고 조화롭다." },
+{ score: 'N', text: "어깨 프레임 끝이 각지게 탁 트였고 골격의 선이 단단히 느껴진다." }
+ ]
+},
+{
+id: 4,
+part: "04. 쇄골 가슴의 거리",
+category: "상체 골격 구조",
+text: "쇄골 뼈에서 바스트 탑(가슴 볼륨 최고점)까지의 수직 거리는 어떠합니까?",
+options: [
+{ score: 'S', text: "가슴 탑 바이브 위치가 높게 위치하여 목라인과 데콜테가 거리가 좁고 도톰해 보인다." },
+{ score: 'W', text: "목과 쇄골에서 가슴 탑까지 완만하게 떨어져 수직 거리가 멀고 상체가 여려 보인다." },
+{ score: 'N', text: "특별히 위나 아래로 치우치지 않고 보편적이며 자연스러운 수직 거리를 가졌다." }
+ ]
+},
+{
+id: 5,
+part: "05. 몸의 무게중심",
+category: "종합 체형 실루엣",
+text: "옷을 그냥 가볍게 걸쳤을 때, 가장 시선이 머무는 무게중심의 위치는 어디입니까?",
+options: [
+{ score: 'S', text: "무게중심이 비교적 상체 위에 있고 볼륨감이 잡혀 있어 상하 밸런스가 조화롭다." },
+{ score: 'W', text: "상체가 아주 얇고 가늘며, 하체 골반 주변이나 허벅지에 무게중심이 쏠린다." },
+{ score: 'N', text: "어깨 프레임의 존재감이 독보적이며 무게중심이 어깨 및 상체 프레임 중심이다." }
+ ]
+},
+{
+id: 6,
+part: "06. 손의 질감",
+category: "피부 & 피하조직",
+text: "손을 포함해 만졌을 때 느껴지는 전반적인 피부 질감은 어떠합니까?",
+options: [
+{ score: 'S', text: "피부 아래 피하조직의 장력이 느껴지며 피부가 탄력 있고 탱탱한 느낌이다." },
+{ score: 'W', text: "피부 두께가 매우 얇으며 아주 말랑말랑하고 부드러운 느낌이다." },
+{ score: 'N', text: "피부 자체가 비교적 드라이하고 매트하며 두껍고 단단한 느낌이다." }
+ ]
+},
+{
+id: 7,
+part: "07. 근육의 성향",
+category: "피부 & 피하조직",
+text: "운동 혹은 일상 생활 시, 내 몸에 근육은 어떻게 붙는 편입니까?",
+options: [
+{ score: 'S', text: "근육이 쉽게 아주 잘 발달하고 탄탄한 라인을 유지하는 편이다." },
+{ score: 'W', text: "운동을 많이 해도 쉽게 단단해지지 않고 근육이 잘 생기지 않는 편이다." },
+{ score: 'N', text: "근육감과 지방이 거의 느껴지지 않고 뼈대의 윤곽이 그대로 드러난다." }
+ ]
+},
+{
+id: 8,
+part: "08. 위쪽 팔(상완)",
+category: "상체 골격 구조",
+text: "어깨선 바로 아래 상완(위팔뚝) 바깥 라인의 입체감은 어떠합니까?",
+options: [
+{ score: 'S', text: "상완에 탄탄한 근육감이 있으며 앞/바깥 방향으로 둥근 볼륨과 탄력이 느껴진다." },
+{ score: 'W', text: "피부 아래 살집이 처지는 느낌이 들며, 부드러운 질감에 탄력이 느껴지지 않는다." },
+{ score: 'N', text: "근육 및 살집이 거의 없고, 팔뚝이 마르고 길며 골격과 뼈의 느낌만 강하다." }
+ ]
+},
+{
+id: 9,
+part: "09. 쇄골",
+category: "상체 골격 구조",
+text: "정면 데콜테 영역에서 보이는 쇄골 뼈대의 존재감은 어떠합니까?",
+options: [
+{ score: 'S', text: "쇄골 주변에 살집이 두꺼워 정면에서 쇄골 뼈대가 거의 눈에 띄지 않는다." },
+{ score: 'W', text: "가느다란 쇄골이 살짝 보이는 편이며 선이 부드럽고 가늘다." },
+{ score: 'N', text: "쇄골이 굉장히 굵고 크게 튀어나와 정면에서 형태가 아주 뚜렷하다." }
+ ]
+},
+{
+id: 10,
+part: "10. 가슴(남녀 분기)",
+category: "상체 골격 구조",
+text: "성별에 맞춘 가슴 주변의 입체감과 흉통은 어떠합니까?",
+options: [] // 성별 선택 시 동적 바인딩
+},
+{
+id: 11,
+part: "11. 늑골(갈비뼈)의 단면",
+category: "체간부 실루엣",
+text: "가슴 바로 아래 갈비뼈 몸통의 입체적인 단면 형태는 어떻습니까?",
+options: [
+{ score: 'S', text: "갈비뼈 단면 자체가 앞뒤로 깊어 둥근 원통형에 가깝고 상체의 입체감이 크다." },
+{ score: 'W', text: "갈비뼈 단면이 극도로 얇고 좌우로만 넓은 극강의 납작한 타원형이다." },
+{ score: 'N', text: "단면은 약간 납작한 편이지만 단단하고 견고한 골격의 단면 가로 폭이 느껴진다." }
+ ]
+},
+{
+id: 12,
+part: "12. 어깨의 실루엣",
+category: "상체 골격 구조",
+text: "자신의 어깨 윤곽선과 마감 형태는 어느 쪽에 해당합니까?",
+options: [
+{ score: 'S', text: "어깨선이 둥글고 두툼하게 떨어지며 탄탄하고 건강한 느낌이다." },
+{ score: 'W', text: "어깨 골격 폭이 다소 좁고 가냘프며 어깨선이 슬쩍 아래로 처져 있다." },
+{ score: 'N', text: "어깨 골격이 곧고 프레임이 각진 편이며 가로 폭이 넓고 뚜렷하다." }
+ ]
+},
+{
+id: 13,
+part: "13. 등의 굴곡",
+category: "체간부 실루엣",
+text: "등 뒤를 정면에서 만지거나 바라보았을 때의 실루엣은 어떻습니까?",
+options: [
+{ score: 'S', text: "등 뒤에 도톰한 탄력이 잡히며 둥근 입체 형태의 볼륨과 두께감이 잡힌다." },
+{ score: 'W', text: "등 뒤에 군살이나 뼈의 돌출 없이 매끄럽고 얇으며 평평하다." },
+{ score: 'N', text: "등에 살집이 거의 없고 견갑골(날개뼈) 형태가 선명하게 만져지고 도드라진다." }
+ ]
+},
+{
+id: 14,
+part: "14. 엉덩이(둔부) 위치",
+category: "하체 골격 구조",
+text: "엉덩이 볼륨의 최상단 시작점 및 전반적인 높낮이 밸런스는 어떻습니까?",
+options: [
+{ score: 'S', text: "엉덩이 시작점과 볼륨 위치가 높은 편에 집중되어 둥글고 탄탄하다." },
+{ score: 'W', text: "허리선이 길고 엉덩이 볼륨 및 무게중심 위치가 다소 낮은 편이다." },
+{ score: 'N', text: "엉덩이에 볼륨감이 별로 없고 납작하며 골반의 단단한 뼈대가 느껴진다." }
+ ]
+},
+{
+id: 15,
+part: "15. 무릎뼈 크기",
+category: "하체 골격 구조",
+text: "서 있거나 앉았을 때 무릎 슬개골 관절뼈의 형태나 두드러짐은?",
+options: [
+{ score: 'S', text: "무릎 슬개골 뼈가 매우 작고 둥글어 도톰한 살집 아래 묻혀 보이지 않는다." },
+{ score: 'W', text: "무릎 관절이 보통 크기이며 튀어나오지 않고 둥근 인상을 가진다." },
+{ score: 'N', text: "무릎 관절 뼈 자체가 아주 크고 도드라져 단단하게 뼈 형태가 부각된다." }
+ ]
+},
+{
+id: 16,
+part: "16. 전체 실루엣",
+category: "종합 체형 실루엣",
+text: "옷을 배제하고 보았을 때 나타나는 내 몸의 가장 정교한 바디 곡선 특징은?",
+options: [
+{ score: 'S', text: "전체적으로 상하 밸런스가 뛰어나며 가슴-엉덩이의 글래머러스한 입체 볼륨감이 있다." },
+{ score: 'W', text: "몸의 두께가 매우 가늘고 얇으며, 유선형의 흐르는 부드러운 가녀린 실루엣이다." },
+{ score: 'N', text: "근육이나 지방의 느낌보다는 어깨, 골반 등 뼈대 프레임이 돋보이는 모던한 체형이다." }
+ ]
+}
+];
+
+// 상태 관리 변수들
+let userName = "";
+let userGender = "";
+let currentQuestionIndex = 0;
+const userAnswers = []; // 각 인덱스마다 'S', 'W', 'N' 중 하나를 가짐
+
+// 남녀별 가슴 질문 옵션 매핑 (PDF 및 워드 분기 반영)
+const chestOptions = {
+female: [
+{ score: 'S', text: "여성 기준: 바스트 탑(가슴의 가장 높은 위치)이 상대적으로 위에 높게 위치한다." },
+{ score: 'W', text: "여성 기준: 바스트 탑이 다소 완만하고 아래쪽에 위치하여 세련된 분위기를 낸다." },
+{ score: 'N', text: "여성 기준: 특별히 위아래로 치우치지 않았으며 평균적이거나 약간 위쪽인 편이다." }
+ ],
+male: [
+{ score: 'S', text: "흉부가 앞뒤로 두꺼워 3D 입체감이 크고 근육층 형성이 아주 잘 된다." },
+{ score: 'W', text: "흉부가 얇고 납작한 편이라 전체적인 몸의 옆라인 부피가 적다." },
+{ score: 'N', text: "흉부가 다소 얇은 축이나 프레임 가로 뼈의 단단함이 먼저 눈에 띈다." }
+ ]
+};
+
+// 알림창 헬퍼 함수
+function showAlert(title, message, iconClass = "fa-circle-info") {
+document.getElementById('alert-title').innerText = title;
+document.getElementById('alert-message').innerText = message;
+document.getElementById('alert-icon').className = fa-solid ${iconClass}`;
+document.getElementById('alert-modal').classList.remove('hidden');
+}
+
+// 알림창 닫기
+function closeAlert() {
+document.getElementById('alert-modal').classList.add('hidden');
+}
+
+// 성별 선택 함수
+function selectGender(gender) {
+userGender = gender;
+const btnFemale = document.getElementById('btn-female');
+const btnMale = document.getElementById('btn-male');
+
+if (gender === 'female') {
+btnFemale.classList.add('option-active');
+btnFemale.classList.remove('border-neutral-200');
+btnMale.classList.remove('option-active');
+btnMale.classList.add('border-neutral-200');
+} else {
+btnMale.classList.add('option-active');
+btnMale.classList.remove('border-neutral-200');
+btnFemale.classList.remove('option-active');
+btnFemale.classList.add('border-neutral-200');
+}
+}
+
+// 진단 시작 로직
+function startDiagnosis() {
+const nameInput = document.getElementById('user-name').value.trim();
+userName = nameInput || "익명의 테스터";
+
+if (!userGender) {
+showAlert("선택 필수", "진단을 정확히 분석하기 위해 성별을 선택해 주세요.", "fa-venus-mars");
+return;
+}
+
+// 가슴 질문 (인덱스 9, Q10)에 대한 가변 질문 처리
+questions[9].options = chestOptions[userGender];
+if (userGender === 'female') {
+questions[9].text = "여성 기준, 바스트 탑(가슴 볼륨 최고점)의 상대적인 높낮이와 모양 분포는 어떻습니까?";
+} else {
+questions[9].text = "남성 기준, 흉통 두께감 및 가슴 주변 근육/골격 도드라짐 정도는 어떻습니까?";
+}
+
+// 화면 전환
+document.getElementById('step-intro').classList.add('hidden');
+document.getElementById('step-question').classList.remove('hidden');
+
+currentQuestionIndex = 0;
+showQuestion();
+}
+
+// 질문 뿌려주기
+function showQuestion() {
+const q = questions[currentQuestionIndex];
+
+// 카운터 및 진행바 세팅
+document.getElementById('question-category').innerText = ${q.category} · $`{q.part}`; document.getElementById('question-counter').innerText =${String(currentQuestionIndex + 1).padStart(2, '0')} / 16`;
+
+const percentage = ((currentQuestionIndex + 1) / 16) * 100;
+document.getElementById('progress-bar').style.width = ${percentage}%`;
+
+// 텍스트 바인딩
+document.getElementById('question-part').innerText = q.part;
+document.getElementById('question-text').innerText = q.text;
+
+// 상세 텍스트 선택지 버튼 렌더링
+const optionsContainer = document.getElementById('options-container');
+optionsContainer.innerHTML = '';
+
+q.options.forEach((opt) => {
+const optionBtn = document.createElement('button');
+const isSelected = userAnswers[currentQuestionIndex] === opt.score;
+optionBtn.className = w-full p-5 border-2 rounded-2xl text-left hover:bg-amber-50/40 hover:border-amber-400/60 transition-all duration-200 flex items-start space-x-4${isSelected ? 'option-active' : 'border-neutral-200 bg-white'}`;
+
+const badgeLabel = opt.score; // S, W, N
+let badgeColorClass = "bg-amber-100 text-amber-800";
+if (badgeLabel === 'W') badgeColorClass = "bg-rose-100 text-rose-800";
+if (badgeLabel === 'N') badgeColorClass = "bg-emerald-100 text-emerald-800";
+
+optionBtn.innerHTML = &lt;span class="w-7 h-7 rounded-full ${badgeColorClass} flex items-center justify-center text-xs font-black shrink-0 mt-0.5">${badgeLabel}&lt;/span&gt; &lt;div class="flex-grow"&gt; &lt;span class="text-xs font-semibold text-neutral-400 block mb-1"&gt;골격 타입 ${badgeLabel}</span>
+<span class="text-neutral-700 font-medium leading-relaxed text-sm md:text-base">${opt.text}&lt;/span&gt; &lt;/div&gt;;
+
+optionBtn.onclick = () => selectOption(opt.score);
+optionsContainer.appendChild(optionBtn);
+});
+
+// 이전 버튼 보이기/숨기기
+const btnPrev = document.getElementById('btn-prev');
+if (currentQuestionIndex === 0) {
+btnPrev.classList.add('invisible');
+} else {
+btnPrev.classList.remove('invisible');
+}
+}
+
+// 옵션 선택 후 다음 질문
+function selectOption(score) {
+userAnswers[currentQuestionIndex] = score;
+
+// 선택한 카드가 즉시 하이라이트 되도록 재렌더링
+showQuestion();
+
+// 시각적 피드백 뒤 다음 질문으로 매끄럽게 이동
+setTimeout(() => {
+if (currentQuestionIndex < 15) {
+currentQuestionIndex++;
+showQuestion();
+} else {
+showResult();
+}
+}, 250);
+}
+
+// 이전 질문으로 이동
+function prevQuestion() {
+if (currentQuestionIndex > 0) {
+currentQuestionIndex--;
+showQuestion();
+}
+}
+
+// 결과 정밀 계산기
+function showResult() {
+document.getElementById('step-question').classList.add('hidden');
+document.getElementById('step-result').classList.remove('hidden');
+
+document.getElementById('result-user-name').innerText = userName;
+
+// 점수 계산
+let sCount = 0;
+let wCount = 0;
+let nCount = 0;
+
+userAnswers.forEach(ans => {
+if (ans === 'S') sCount++;
+else if (ans === 'W') wCount++;
+else if (ans === 'N') nCount++;
+});
+
+const total = sCount + wCount + nCount;
+const sPercent = Math.round((sCount / total) * 100);
+const wPercent = Math.round((wCount / total) * 100);
+const nPercent = Math.round((nCount / total) * 100);
+
+// 그래프 애니메이션 세팅
+document.getElementById('ratio-s-text').innerText = ${sPercent}% (${sCount}개);
+document.getElementById('ratio-s-bar').style.width = ${sPercent}%`;
+
+document.getElementById('ratio-w-text').innerText = ${wPercent}% ($`{wCount}개)`; document.getElementById('ratio-w-bar').style.width =${wPercent}%`;
+
+document.getElementById('ratio-n-text').innerText = ${nPercent}% (${nCount}개);
+document.getElementById('ratio-n-bar').style.width = ${nPercent}%`;
+
+// 타입 결정 로직 (동점 믹스 타입 고려)
+let finalType = "";
+let typeTitle = "";
+let typeIntro = "";
+let features = [];
+let stylingGuide = "";
+
+const maxScore = Math.max(sCount, wCount, nCount);
+
+// 동점 유형 매칭
+if (sCount === maxScore && wCount === maxScore && nCount === maxScore) {
+finalType = "All-Mix";
+typeTitle = "조화로운 뉴트럴 믹스 골격";
+typeIntro = "스트레이트, 웨이브, 내추럴의 성향이 모두 완벽한 황금비율로 조화된 희귀 골격 체형입니다.";
+features = [
+"세 가지 체형의 매력이 고루 조화를 이루어 코디 스펙트럼이 아주 넓습니다.",
+"피부와 근육은 비교적 건강한 탄력을 가지며 하체 밸런스 역시 우수합니다.",
+"특정 체형에 치우치지 않으므로 그날의 코디 컨셉에 따라 카멜레온처럼 변신이 가능합니다."
+ ];
+stylingGuide = &lt;p class="mb-2"&gt;&lt;strong class="text-amber-950"&gt;&lt;i class="fa-solid fa-thumbs-up text-emerald-600 mr-1"&gt;&lt;/i&gt; 추천 스타일:&lt;/strong&gt; 세 가지 골격이 고루 균형을 이뤘으므로 과도하게 오버사이즈된 옷보다는 세미루즈핏이나 허리선을 깔끔하게 살리는 실루엣이 가장 멋스럽습니다.&lt;/p&gt; &lt;p&gt;&lt;strong class="text-red-900"&gt;&lt;i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1"&gt;&lt;/i&gt; 피해야 할 옷:&lt;/strong&gt; 지나치게 무겁고 단단한 하드 가죽 자켓 등 한쪽 특성으로 완전히 쏠린 의상이 골격의 균형감을 흐릴 수 있습니다.&lt;/p&gt;;
+} else if (sCount === maxScore && wCount === maxScore) {
+finalType = "S-W-Mix";
+typeTitle = "스트레이트 & 웨이브 혼합 체형";
+typeIntro = "입체적인 볼륨감(S)과 가녀리고 보드라운 선(W)이 위아래 혹은 질감적으로 매끄럽게 교차하는 다채로운 매력의 체형입니다.";
+features = [
+"상체는 바스트 탑 위치가 높고 도톰하나(S), 피부결과 어깨선은 아주 여리고 보들보들합니다(W).",
+"허리와 복부는 날씬하게 수축하는 편이나 엉덩이 볼륨의 입체감은 뛰어난 편입니다.",
+"탄력 있는 바디라인 속에 부드러운 여성스러움이 함께 공존합니다."
+ ];
+stylingGuide = &lt;p class="mb-2"&gt;&lt;strong class="text-amber-950"&gt;&lt;i class="fa-solid fa-thumbs-up text-emerald-600 mr-1"&gt;&lt;/i&gt; 추천 스타일:&lt;/strong&gt; 목선은 시원하게 트인 U넥이나 V넥을 활용하면서, 허리선은 살짝 위로 잡아주어 다리가 길어 보이는 레트로 페미닌 실루엣이 최고입니다.&lt;/p&gt; &lt;p&gt;&lt;strong class="text-red-900"&gt;&lt;i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1"&gt;&lt;/i&gt; 피해야 할 옷:&lt;/strong&gt; 너무 넓고 형태가 흐려지는 과도한 루즈 오버 핏이나 투박한 린넨은 상체를 부하게 보이게 할 위험이 있습니다.&lt;/p&gt;;
+} else if (sCount === maxScore && nCount === maxScore) {
+finalType = "S-N-Mix";
+typeTitle = "스트레이트 & 내추럴 혼합 체형";
+typeIntro = "볼륨감 있고 건강한 근육 밸런스(S)에 세련된 프레임과 각진 골격(N)이 결합하여 모델처럼 당당하고 시크한 아우라를 풍깁니다.";
+features = [
+"어깨 골격이 잘 잡혀 프레임이 멋스러우면서도(N), 가슴과 허벅지에는탄탄한 두께감이 형성됩니다(S).",
+"심플한 셔츠 한 장만 걸쳐도 완벽한 옷태를 자아내는 현대적인 체형입니다.",
+"적당한 볼륨과 단단한 뼈대가 건강미 넘치는 세련미를 돋보이게 합니다."
+ ];
+stylingGuide = &lt;p class="mb-2"&gt;&lt;strong class="text-amber-950"&gt;&lt;i class="fa-solid fa-thumbs-up text-emerald-600 mr-1"&gt;&lt;/i&gt; 추천 스타일:&lt;/strong&gt; 탄탄한 코튼 셔츠, 빳빳한 데님, 혹은 숄더 패드가 약간 잡힌 웰메이드 세미 오버 자켓이 모던하고 멋들어집니다.&lt;/p&gt; &lt;p&gt;&lt;strong class="text-red-900"&gt;&lt;i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1"&gt;&lt;/i&gt; 피해야 할 옷:&lt;/strong&gt; 가냘픈 레이스나 얇고 주름이 지나치게 많은 쉬폰 가디건 등은 어깨와 건강한 골격을 어색해 보이게 할 수 있습니다.&lt;/p&gt;;
+} else if (wCount === maxScore && nCount === maxScore) {
+finalType = "W-N-Mix";
+typeTitle = "웨이브 & 내추럴 혼합 체형";
+typeIntro = "가녀리고 부드러운 상체 선(W)에 멋스럽고 길쭉한 모델 골격(N)이 결합해 아방가르드하고 예술적인 분위기를 가집니다.";
+features = [
+"두께감 없이 납작하고 부드러운 하이웨이스트 핏이 어울리면서도, 쇄골이나 손발 뼈가 크고 자유롭습니다.",
+"레이어드 룩이나 프렌치 시크 룩을 마네킹처럼 소화할 수 있습니다.",
+"여리여리하면서도 유니크하게 떨어지는 피지컬 밸런스를 가집니다."
+ ];
+stylingGuide = &lt;p class="mb-2"&gt;&lt;strong class="text-amber-950"&gt;&lt;i class="fa-solid fa-thumbs-up text-emerald-600 mr-1"&gt;&lt;/i&gt; 추천 스타일:&lt;/strong&gt; 오버핏 니트웨어, 롱 레이어드 원피스, 보헤미안 무드의 린넨 드레스가 매우 환상적입니다.&lt;/p&gt; &lt;p&gt;&lt;strong class="text-red-900"&gt;&lt;i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1"&gt;&lt;/i&gt; 피해야 할 옷:&lt;/strong&gt; 지나치게 딱 들어맞는 칼라가 빳빳한 정장 면 셔츠나 극도로 타이트한 포멀 오피스룩은 골격 구조를 왜소하게 표현할 수 있습니다.&lt;/p&gt;;
+} else {
+// 단독 우세 유형 매칭
+if (sCount === maxScore) {
+finalType = "Straight";
+typeTitle = "스트레이트 타입 (S 유형)";
+typeIntro = "피하조직이 탄탄하고 볼륨감이 풍부한 입체형 몸매. 무게중심이 상체에 집중되는 건강하고 시크한 클래식 골격입니다.";
+features = [
+"흉통이 두껍고 탄력이 강해 입체적인 서구식 몸매를 가집니다.",
+"목이 다소 짧은 편이며 쇄골이 묻혀있어 상체 라인이 깔끔합니다.",
+"엉덩이 볼륨 위치가 높고 허벅지 탄력이 매우 돋보이는 웰메이드 건강미형입니다."
+ ];
+stylingGuide = &lt;p class="mb-2"&gt;&lt;strong class="text-amber-950"&gt;&lt;i class="fa-solid fa-thumbs-up text-emerald-600 mr-1"&gt;&lt;/i&gt; 추천 스타일:&lt;/strong&gt; 깊게 파인 V넥이나 세로 선을 강조하는 정교한 정장 슈트 핏, 고급 실크/면100% 소재, 일자 슬랙스가 베스트 매칭입니다.&lt;/p&gt; &lt;p&gt;&lt;strong class="text-red-900"&gt;&lt;i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1"&gt;&lt;/i&gt; 피해야 할 옷:&lt;/strong&gt; 부풀어 오르는 풍성한 패딩, 목을 답답하게 덮는 타이트한 하이넥 니트, 러플 가득한 소매는 몸을 부풀어 보이게 만듭니다.&lt;/p&gt;;
+} else if (wCount === maxScore) {
+finalType = "Wave";
+typeTitle = "웨이브 타입 (W 유형)";
+typeIntro = "가슴과 어깨선이 매우 납작하고 선이 여려 페미닌하고 로맨틱함의 진수를 보여줍니다. 무게중심이 주로 하체 아래쪽으로 매끄럽게 흐릅니다.";
+features = [
+"두께가 얇고피부결이 실크처럼 대단히 연약하고 보들보들합니다.",
+"목이 가늘고 길며, 쇄골이 연약하지만 뚜렷이 드러나 가녀립니다.",
+"바스트와 엉덩이 볼륨이 비교적 낮아 하이웨이스트 패션이 드라마틱하게 어울립니다."
+ ];
+stylingGuide = &lt;p class="mb-2"&gt;&lt;strong class="text-amber-950"&gt;&lt;i class="fa-solid fa-thumbs-up text-emerald-600 mr-1"&gt;&lt;/i&gt; 추천 스타일:&lt;/strong&gt; 상체의 마른 곳을 화려하게 덮어줄 프릴, 리본, 크롭 탑, 하이웨이스트 스커트 및 보들거리는 벨벳/모헤어 니트류가 극강의 매력을 만듭니다.&lt;/p&gt; &lt;p&gt;&lt;strong class="text-red-900"&gt;&lt;i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1"&gt;&lt;/i&gt; 피해야 할 옷:&lt;/strong&gt; 지나치게 아래로 축 처지는 긴 통의 보이핏 청바지나 넓은 실루엣의 무거운 롱 코트는 몸을 무겁게 묻어 버립니다.&lt;/p&gt;;
+} else if (nCount === maxScore) {
+finalType = "Natural";
+typeTitle = "내추럴 타입 (N 유형)";
+typeIntro = "군살 없이 뼈대와 관절이 뚜렷해 자유분방하고 내추럴하며 모델 같은 스타일리시한 프레임을 뽐내는 최고급 골격입니다.";
+features = [
+"피부가 두툼하고 매트하며, 근육보다는 뼈대와 힘줄의 선이 정교하게 보입니다.",
+"쇄골 뼈가 굵고 두드러지며, 어깨 각과 너비가 잘 잡혀있어 옷을 걸칠 때 핏이 완벽합니다.",
+"무릎 관절이나 손발뼈 등이 큼직큼직하여 캐주얼이나 오버사이즈 룩을 우아하게 승화합니다."
+ ];
+stylingGuide = &lt;p class="mb-2"&gt;&lt;strong class="text-amber-950"&gt;&lt;i class="fa-solid fa-thumbs-up text-emerald-600 mr-1"&gt;&lt;/i&gt; 추천 스타일:&lt;/strong&gt; 세련된 오버사이즈 와이드 팬츠, 레이어드 빈티지 룩, 데님, 리넨이나 굵게 짜인 니트 아우터 등 자연친화적 직조 소재가 찰떡궁합입니다.&lt;/p&gt; &lt;p&gt;&lt;strong class="text-red-900"&gt;&lt;i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1"&gt;&lt;/i&gt; 피해야 할 옷:&lt;/strong&gt; 몸을 강제로 고정하는 타이트하고 빳빳한 셔츠나 얇고 광택이 심하게 나는 인공적인 새틴 원단은 몸을 부자연스럽게 어색하게 표현합니다.&lt;/p&gt;;
+}
+}
+
+// 렌더링 적용
+document.getElementById('result-type-title').innerText = typeTitle;
+document.getElementById('result-type-intro').innerText = typeIntro;
+
+// 특징 리스트 생성
+const featuresContainer = document.getElementById('result-features');
+featuresContainer.innerHTML = '';
+features.forEach(feat => {
+const li = document.createElement('li');
+li.className = "leading-relaxed";
+li.innerText = feat;
+featuresContainer.appendChild(li);
+});
+
+// 가이드 매치 적용
+document.getElementById('result-recommendations').innerHTML = stylingGuide;
+
+// 결과 전역에 보관하여 로컬스토리지 저장 시 활용
+window.currentResult = {
+name: userName,
+gender: userGender === 'male' ? "남성" : "여성",
+type: typeTitle,
+scores: { S: sPercent, W: wPercent, N: nPercent },
+date: new Date().toLocaleDateString()
+};
+}
+
+// 진단 리셋 로직
+function resetTest() {
+// 변수초기화
+currentQuestionIndex = 0;
+userAnswers.length = 0;
+
+// 성별 리셋
+userGender = "";
+document.getElementById('btn-female').classList.remove('option-active');
+document.getElementById('btn-female').classList.add('border-neutral-200');
+document.getElementById('btn-male').classList.remove('option-active');
+document.getElementById('btn-male').classList.add('border-neutral-200');
+
+document.getElementById('user-name').value = "";
+
+// 화면 전환
+document.getElementById('step-result').classList.add('hidden');
+document.getElementById('step-question').classList.add('hidden');
+document.getElementById('step-intro').classList.remove('hidden');
+}
+
+// 로컬 스토리지에 결과 저장 및 이력 관리
+function saveToHistory() {
+if (!window.currentResult) return;
+
+let history = localStorage.getItem('skeleton_history');
+if (history) {
+history = JSON.parse(history);
+} else {
+history = [];
+}
+
+// 동일한 진단 중복 방지 체크
+const isDuplicate = history.some(item =>
+item.name === window.currentResult.name &&
+item.type === window.currentResult.type &&
+item.date === window.currentResult.date
+);
+
+if (isDuplicate) {
+showAlert("이미 저장됨", "동일한 날짜의 진단 결과가 이미 나의 기록실에 저장되어 있습니다.", "fa-circle-check");
+return;
+}
+
+// 최대 10개만 관리
+if (history.length >= 10) {
+history.shift(); // 제일 옛날것 삭제
+}
+
+history.push(window.currentResult);
+localStorage.setItem('skeleton_history', JSON.stringify(history));
+
+showAlert("저장 완료", "진단 결과가 성공적으로 보관함에 저장되었습니다. 우측 상단 '나의 기록'에서 언제든지 다시 꺼내 보실 수 있습니다.", "fa-bookmark");
+}
+
+// 기록 보기 모달 호출
+function showHistoryModal() {
+const modal = document.getElementById('history-modal');
+const listContainer = document.getElementById('history-list');
+
+modal.classList.remove('hidden');
+
+let history = localStorage.getItem('skeleton_history');
+if (history) {
+history = JSON.parse(history);
+} else {
+history = [];
+}
+
+if (history.length === 0) {
+listContainer.innerHTML = <p class="text-neutral-400 text-center py-8"&gt;아직 저장된 진단 결과가 없습니다.&lt;/p>;
+return;
+}
+
+listContainer.innerHTML = '';
+history.forEach((item, index) => {
+const itemCard = document.createElement('div');
+itemCard.className = "p-4 bg-amber-50/50 hover:bg-amber-50 border border-amber-100 rounded-2xl flex flex-col justify-between space-y-2 transition";
+itemCard.innerHTML = &lt;div class="flex justify-between items-start"&gt; &lt;div&gt; &lt;span class="text-xs font-bold text-amber-800 bg-amber-100/50 px-2 py-0.5 rounded"&gt;${item.gender}</span>
+<span class="text-sm font-bold text-neutral-800 ml-1.5">{item.date}</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-base font-black text-amber-950">{item.scores.S}% W:{item.scores.N}%)</span>
+</div>
+`;
+listContainer.appendChild(itemCard);
+});
+}
+
+// 기록 비우기
+function clearHistory() {
+localStorage.removeItem('skeleton_history');
+showAlert("삭제 완료", "모든 진단 데이터 기록이 깔끔하게 비워졌습니다.", "fa-trash-can");
+showHistoryModal(); // 다시 그리기
+}
+
+function closeHistoryModal() {
+document.getElementById('history-modal').classList.add('hidden');
+}
+</script>
+</body>
+</html>
